@@ -11,7 +11,7 @@ app.use(express.json())
 
 // Set up Auth0 configuration 
 const authConfig = {
-  domain: "https://dev-9khs63qu.us.auth0.com",
+  domain: "dev-9khs63qu.us.auth0.com",
   audience: "https://vue-express-api.com"
 };
 
@@ -32,11 +32,6 @@ const checkJwt = jwt({
 });
 
 // For this app, we only want to protect the route that returns the details of an event
-app.get('/events/:id', checkJwt, (req, res) => {
-    const id = Number(req.params.id);
-    const event = events.find(event => event.id === id);
-    res.send(event);
-  });
 app.get('/', checkJwt, (req, res) => {
     res.send(".....hello world.....")
 });
