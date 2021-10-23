@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors')
-const jwt = require("express-jwt"); // NEW
-const jwksRsa = require("jwks-rsa"); // NEW
+const jwt = require("express-jwt");
+const jwksRsa = require("jwks-rsa");
+const axios = require('axios');
 const port = 3000
 const app = express()
 
@@ -31,9 +32,12 @@ const checkJwt = jwt({
   algorithms: ["RS256"]
 });
 
-// For this app, we only want to protect the route that returns the details of an event
-app.get('/', checkJwt, (req, res) => {
-    res.send(".....hello world.....")
+// Get random pokemon
+app.get('/api/v1/pokemon', checkJwt, async (req, res) => {
+    //Random ID Pokemon from 1 - 898 which the response API's available on the API
+    const randomId = Math.floor(Math.random() * 898) + 1
+    let result = await axios.get("https://pokeapi.co/api/v2/pokemon/" + randomId)
+    res.status(200).json(result.data)
 });
 
 app.listen(port, () => {
